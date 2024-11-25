@@ -176,7 +176,7 @@ class jaco(Scene):
         text3= Text("to a distance from the origin r at some angle theta ", color = PINK, font_size = 24)
         text2.align_to(maps)
         text2.next_to(maps, DOWN)
-        text2.shift(2/3 * LEFT, 1/4 * DOWN)
+        text2.shift( LEFT, 1/4 * DOWN)
         text3.align_to(text2)
         text3.next_to(text2, DOWN)
         self.play(Write(text2), Write(text3))
@@ -326,9 +326,65 @@ class jaco(Scene):
 
         self.wait(1)
 
-        self.play(FadeOut(dxdy, ques))
+        self.play(FadeOut(dxdy, ques, map ,Tmap))
 
-        diff = MathTex(r"")
+        diff = MathTex(r"\partial(x, y)", r"\over", r"\partial(r,\theta)", color = PINK)
+
+        diff.shift(LEFT * 11/2)
+        
+        equal = MathTex(r"=", color = PINK)
+        equal.next_to(diff, RIGHT)
+        m = Matrix([[r"{{cos\theta}}", r"{{sin\theta}}"],[r"{{-rsin\theta}}", r"{{rcos\theta}}"]]).set_color(PINK)
+        m.next_to(equal, 2 * RIGHT)
+        
+        self.play(Write(diff), Write(equal), Write(m))
+
+        m1 = MathTex(r"{{(rcos(\theta)^2}}", r"+", r"{{rsin(\theta)^{2})}}", color = PINK)
+        m1.move_to(m)
+
+        self.play(TransformMatchingShapes(m,m1))
+        self.wait(1)
+
+
+        m3 = MathTex(r"{{r}}",r"{{(cos(\theta)^2}}", r"+", r"{{sin(\theta)^{2})}}", color = PINK)
+        m3.shift(2 * DOWN, 2 * LEFT)
+        
+        self.play(TransformMatchingShapes(m1, m3))
+        self.wait(1)
+        
+        m4 = MathTex(r"{{r}}{{(1)}}", color = PINK)
+        m4.move_to(m3)
+
+        self.play(TransformMatchingShapes(m3, m4))
+        self.wait(1)
+
+        m5 = MathTex(r"r", color = PINK)
+        m5.move_to(m4)
+
+        self.play(TransformMatchingTex(m4, m5))
+
+        self.play(m5.animate.next_to(equal, RIGHT))
+        
+        self.wait(0.75)
+
+        m6 = MathTex(r"{{rdrd\theta}}", color = PINK)
+        m6.move_to(ques)
+
+        self.play(FadeOut(diff, equal), m5.animate.move_to(ques), FadeIn(dxdy, Tmap, map), TransformMatchingShapes(m5, m6))
+        
+        self.wait(0.75)
+
+        self.play(m6.animate.shift(UP, 2 * LEFT), FadeOut(map, Tmap, dxdy))
+
+        fint = MathTex(r"\int_{0}^{2\pi} \int_{0}^{1} r\,dr\, d\theta \\", color = PINK)
+        fint.shift(2 * LEFT, 1/2 * DOWN)
+        self.wait(0.75)
+        self.play(Write(fint))
+
+        eva = MathTex(r"Evaluate", color = PINK)
+        eva.shift(3/2 * LEFT)
+        
+        self.play(FadeOut(m6, thetarange, feq, feq1, drb4, pax, circle), Write(eva), fint.animate.next_to(eva, RIGHT))
 
 
 
