@@ -1,0 +1,187 @@
+from manim import *
+
+class Dih(Scene):
+    
+   def construct(self):
+    myTemplate = TexTemplate()
+    myTemplate.add_to_preamble(r"\DeclareMathOperator{\Dih}{Dih}")
+    
+    intro = Text("The Dihedral (8) Group", color = PINK, font_size =30)
+    self.play(Write(intro))
+    self.wait(3)
+    self.play(intro.animate.shift(UP *3))
+
+    self.wait(2)
+    t1 = Text("How many unique permutations", color = PINK, font_size = 24) 
+    t12 = Text("can we perform on the vertices of a", color = PINK, font_size = 24) 
+    t13 = Text("square while preserving symmetry?", color = PINK, font_size = 24)
+    t12.next_to(t1, DOWN)
+    t13.next_to(t12, DOWN)
+    self.play(Write(t1), run_time = 2)
+    self.play(Write(t12), run_time = 2)
+    self.play(Write(t13), run_time = 2)
+    self.wait(2)
+    self.play(FadeOut(t1))
+    self.play(FadeOut(t12))
+    self.play(FadeOut(t13))
+    t2 = Text("In short the answer is 8", color = PINK, font_size = 24)
+    self.play(Write(t2))
+    self.wait(2) 
+    self.play(FadeOut(t2))
+
+    s1 = Square(stroke_color = PINK)
+    self.play(Write(s1))
+    v1 = Text("A", color = PINK, font_size = 20)
+    v2 = Text("B", color = PINK, font_size = 20)
+    v3 = Text("C", color = PINK, font_size = 20)
+    v4 = Text("D", color = PINK, font_size = 20)
+    v1.next_to(s1, LEFT + UP)
+    v2.next_to(s1, RIGHT + UP)
+    v3.next_to(s1, RIGHT + DOWN)
+    v4.next_to(s1, LEFT + DOWN)
+    self.play(FadeIn(v1,v2,v3,v4))
+
+    self.play(Rotate(s1, angle = PI / 2), v1.animate.next_to(s1, LEFT + DOWN), v2.animate.next_to(s1, LEFT + UP), v3.animate.next_to(s1, RIGHT + UP),v4.animate.next_to(s1, RIGHT + DOWN))
+
+    t4 = Text("Let's call this rotation r", color = PINK, font_size = 22)
+    t4.next_to(s1,DOWN * 3 )
+    self.play(Write(t4))
+    self.wait(2)
+
+    TDih = Tex("Dih", r"$_8 = \{r \}$", color = PINK, font_size = 26)
+    TDih.next_to(s1, UP * 5/2)
+    self.play(Write(TDih), FadeOut(t4))
+   
+    self.wait(1) 
+
+    self.play(Rotate(s1, angle = PI / 2), v1.animate.next_to(s1, RIGHT + DOWN), v2.animate.next_to(s1, LEFT + DOWN), v3.animate.next_to(s1, LEFT + UP),v4.animate.next_to(s1, RIGHT + UP))
+    t5 = Tex("Let's call this rotation ", r"$r^2$", color = PINK, font_size = 22)
+    t5.next_to(s1, DOWN *3)
+    self.play(Write(t5))
+
+    TDih2 = Tex("Dih", r"$_8 = \{r, r^2 \}$", color = PINK, font_size = 26)
+    TDih2.next_to(s1, UP * 5/2)
+    self.play(TransformMatchingTex(TDih, TDih2), FadeOut(t5))
+
+    self.wait(1)
+
+    self.play(Rotate(s1, angle = PI / 2), v1.animate.next_to(s1, RIGHT + UP), v2.animate.next_to(s1, RIGHT + DOWN), v3.animate.next_to(s1, LEFT + DOWN),v4.animate.next_to(s1, LEFT + UP))
+    TDih3 = Tex("Dih", r"$_8 = \{r, r^2, r^3 \}$", color = PINK, font_size = 26)
+    TDih3.next_to(s1, UP * 5/2)
+    self.play(TransformMatchingTex(TDih2, TDih3)) 
+
+    self.wait(1)
+
+    self.play(Rotate(s1, angle = PI / 2), v1.animate.next_to(s1, LEFT + UP), v2.animate.next_to(s1, RIGHT + UP), v3.animate.next_to(s1, RIGHT + DOWN),v4.animate.next_to(s1, LEFT + DOWN))
+    TDih4 = Tex("Dih", r"$_8 = \{r, r^2, r^3, r^4\}$", color = PINK, font_size = 26)
+    TDih41 = Tex("Dih", r"$_8 = \{1, r, r^2, r^3\}$", color = PINK, font_size = 26)
+    TDih4.next_to(s1, UP * 5/2)
+    TDih41.next_to(s1, UP * 5/2)
+    self.play(TransformMatchingTex(TDih3, TDih4))
+    t6 = Tex("Note that ", r"$r^4$", " is the same as" , color = PINK, font_size = 22)
+    t7 = Tex("doing nothing so let ", r"$r^4 = 1$", color = PINK, font_size = 22)
+    t6.next_to(s1, DOWN*3)
+    t7.next_to(t6, DOWN)
+    self.play(Write(t6))
+    self.play(Write(t7)) 
+    self.play(TransformMatchingTex(TDih4, TDih41), FadeOut(t6,t7))
+    self.wait(2) 
+
+    l1 = DashedLine(5/4 * 1/2 * (s1.get_vertices()[0] + s1.get_vertices()[1]), 5/4 * 1/2 * (s1.get_vertices()[2] + s1.get_vertices()[3]), dash_length = 0.25, stroke_width = 0.75)
+    l2 = DashedLine(s1.get_vertices()[0] * 9/8, s1.get_vertices()[2] * 9/8, dash_length = 0.25, stroke_width = 0.75)
+    l3 = DashedLine(5/4 * 1/2 * (s1.get_vertices()[1] + s1.get_vertices()[2]), 5/4 * 1/2 * (s1.get_vertices()[3] + s1.get_vertices()[0]), dash_length = 0.25, stroke_width = 0.75)
+    l4 = DashedLine(s1.get_vertices()[1] * 9/8, s1.get_vertices()[3] * 9/8, dash_length = 0.25, stroke_width = 0.75)
+
+    lt1 = Tex(r"$l_3$", font_size = 22)
+    lt2 = Tex(r"$l_4$", font_size = 22)
+    lt3 = Tex(r"$l_1$", font_size = 22)
+    lt4 = Tex(r"$l_2$", font_size = 22)
+    lt1.next_to( 1/2 * (s1.get_vertices()[0] + s1.get_vertices()[1]), 1/2 * (LEFT + UP))
+    lt2.next_to(s1.get_vertices()[0], (1 /2 * LEFT) + (1 / 2 * UP))
+    lt3.next_to(1/2 * (s1.get_vertices()[1] + s1.get_vertices()[2]), LEFT + 1/2 *UP) 
+    lt4.next_to(s1.get_vertices()[1], LEFT)
+    
+    e1 = Tex("Observe the lines of symmetry for a square", color = PINK, font_size = 22)
+    e1.next_to(s1, DOWN * 3)
+
+    self.play(Write(e1), FadeIn(l1, l2, l3, l4, lt1, lt2, lt3, lt4, run_time= 2))
+    self.wait(2)
+    self.play(FadeOut(e1))
+
+    e2 = Tex("Reflections across these lines preserve symmetry", color = PINK, font_size = 22)
+    e2.next_to(s1, DOWN * 3)
+    self.play(Write(e2))
+    self.wait(2)
+    self.play(FadeOut(e2))
+    e3 = Tex("A reflection across ",r"$l_k$", " is denoted by ", r"$\sigma_k$", color = PINK, font_size = 22) 
+    e31 = Tex(" for ", r"$1\leq k \leq 4$", color = PINK, font_size = 22)
+    e3.next_to(s1, DOWN * 3)
+    e31.next_to(e3, DOWN)
+    self.play(Write(e3))
+    self.play(Write(e31))
+    self.wait(2)
+    self.play(FadeOut(e3, e31)) 
+
+    self.wait(1)
+    TDih5 = Tex("Dih", r"$_8 = \{ 1, r, r^2, r^3 , \sigma_1\}$", color = PINK, font_size = 26)
+    TDih5.next_to(s1, UP * 5/2)
+    self.play(FadeOut(l2,l1,l4, lt2, lt4, lt1), run_time = 1.5)
+    m1 = [[1,0] , [0,-1]]
+    self.play(s1.animate.apply_matrix(m1), v1.animate.next_to(s1, DOWN + LEFT), v2.animate.next_to(s1, DOWN + RIGHT), v3.animate.next_to(s1, UP + RIGHT), v4.animate.next_to(s1, UP + LEFT), TransformMatchingTex(TDih41, TDih5))
+    self.wait(1)
+    self.play(s1.animate.apply_matrix(m1), v1.animate.next_to(s1, UP + LEFT), v2.animate.next_to(s1, UP + RIGHT), v3.animate.next_to(s1, DOWN + RIGHT), v4.animate.next_to(s1, DOWN + LEFT))
+
+    self.wait(1)
+    TDih6 = Tex("Dih", r"$_8 = \{ 1, r, r^2, r^3 , \sigma_1, \sigma_2 \}$", color = PINK, font_size = 26)
+    TDih6.next_to(s1, UP * 5/2)
+    self.play(FadeIn(l4, lt4), FadeOut(l3, lt3), run_time = 1.5)
+    m2 = [[0,-1] , [-1,0]]
+    self.play(s1.animate.apply_matrix(m2), v2.animate.next_to(s1, DOWN + LEFT), v4.animate.next_to(s1,UP + RIGHT), TransformMatchingTex(TDih5, TDih6))
+    self.wait(1)
+    self.play(s1.animate.apply_matrix(m2), v2.animate.next_to(s1, UP + RIGHT), v4.animate.next_to(s1,DOWN + LEFT))
+
+    self.wait(1)
+    TDih7 = Tex("Dih", r"$_8 = \{ 1, r, r^2, r^3 , \sigma_1, \sigma_2, \sigma_3 \}$", color = PINK, font_size = 26)
+    TDih7.next_to(s1, UP * 5/2)
+    self.play(FadeOut(l4, lt4), FadeIn(l1, lt1), run_time = 1.5)
+    m3 = [[-1,0] , [0,1]]
+    self.play(s1.animate.apply_matrix(m3), v1.animate.next_to(s1, UP + RIGHT), v2.animate.next_to(s1,UP + LEFT), v3.animate.next_to(s1, DOWN + LEFT), v4.animate.next_to(s1,DOWN + RIGHT), TransformMatchingTex(TDih6, TDih7))
+    self.wait(1)
+    self.play(s1.animate.apply_matrix(m3), v2.animate.next_to(s1, UP + RIGHT), v1.animate.next_to(s1,UP + LEFT), v4.animate.next_to(s1, DOWN + LEFT), v3.animate.next_to(s1,DOWN + RIGHT))
+
+    self.wait(1)
+    TDih8 = Tex("Dih", r"$_8 = \{ 1, r, r^2, r^3 , \sigma_1, \sigma_2, \sigma_3, \sigma_4 \}$", color = PINK, font_size = 26)
+    TDih8.next_to(s1, UP * 5/2)
+    self.play(FadeOut(l1, lt1), FadeIn(l2, lt2), run_time = 1.5)
+    m4 = [[0,1] , [1,0]]
+    self.play(s1.animate.apply_matrix(m4), v1.animate.next_to(s1, DOWN + RIGHT), v3.animate.next_to(s1,UP + LEFT), TransformMatchingTex(TDih7, TDih8))
+    self.wait(1)
+    self.play(s1.animate.apply_matrix(m4), v3.animate.next_to(s1, DOWN + RIGHT), v1.animate.next_to(s1,UP + LEFT))
+
+    self.wait(2)
+
+    self.play(FadeOut(s1, v1, v2, v3, v4, lt2, l2))
+    
+    g1 = Tex("For ", r"$n$", "-gons in genereral, it is true that", color = PINK, font_size = 24)
+    g2 = Tex("the number of permutations which", color = PINK, font_size = 24) 
+    h1 = Tex("preserve symmetry is equal to ", r"$2n$", color = PINK, font_size = 24)
+    g2.next_to(g1,DOWN)
+    h1.next_to(g2, DOWN)
+    self.play(Write(g1))
+    self.play(Write(g2))
+    self.play(Write(h1))
+    self.wait(2)
+    self.play(FadeOut(h1, g1,g2))
+
+    g3 =  Tex("The size of a group is called its' order", color = PINK, font_size = 24) 
+    g31 = Tex("formally we would write ", r"$\#$", "Dih", r"$_{2n} = 2n$", color = PINK, font_size = 24)
+    g4 =  Tex("for an arbitrary ", r"$n$", "-gon", color = PINK, font_size = 24)
+    g31.next_to(g3,DOWN)
+    g4.next_to(g31, DOWN)
+    self.play(Write(g3))
+    self.play(Write(g31))
+    self.play(Write(g4))
+    self.wait(3)
+    self.play(FadeOut(g3, g31, g4, intro, TDih8)) 
+    self.wait(1)
+
